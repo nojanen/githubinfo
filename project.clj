@@ -1,6 +1,6 @@
 (defproject githubinfo "0.1.0-SNAPSHOT"
 
-  :description "FIXME: write description"
+  :description "Find and cache organization info from Github"
   :url "http://example.com/FIXME"
 
   :dependencies [[ch.qos.logback/logback-classic "1.2.3"]
@@ -56,12 +56,14 @@
                                  [pjstadig/humane-test-output "0.9.0"]
                                  [prone "1.6.1"]
                                  [ring/ring-devel "1.7.1"]
-                                 [ring/ring-mock "0.3.2"]]
+                                 [ring/ring-mock "0.3.2"]
+                                 [clj-http "3.9.1"]]
                   :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"]]
                   
                   :source-paths ["env/dev/clj"]
                   :resource-paths ["env/dev/resources"]
-                  :repl-options {:init-ns user}
+                  :repl-options {:init-ns user
+                                 :timeout 120000 }
                   :injections [(require 'pjstadig.humane-test-output)
                                (pjstadig.humane-test-output/activate!)]}
    :project/test {:jvm-opts ["-Dconf=test-config.edn"]
