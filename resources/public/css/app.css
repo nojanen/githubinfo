@@ -1,0 +1,70 @@
+body { 
+    background: #fff; 
+    color: #000; 
+    font-family: Helvetica, Arial, sans-serif; 
+    margin: 0; 
+    padding: 0; 
+    text-align: center; 
+}
+
+.owner { 
+    background:#aaaaaa; 
+    color:#fff; 
+    border:5px solid #fff; 
+    margin:0px; 
+    padding:10px;
+    -webkit-border-radius: 15px; 
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+.repoList {
+    /*display: none;*/
+    margin: auto;
+}
+
+input { 
+    -webkit-border-radius: 3px; 
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin: 3px;
+    padding:2px
+}
+
+button {
+  border:1px solid #000; 
+  -webkit-border-radius: 3px; 
+  -moz-border-radius: 3px; 
+  border-radius: 3px;
+  font-size:12px;
+  font-family:arial, helvetica, sans-serif; 
+  padding: 10px 10px 10px 10px; 
+  text-decoration:none; 
+  display:inline-block;
+  font-weight:bold; 
+  color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgb(77, 77, 77)), to(rgb(29, 29, 27)));
+}
+
+ul {
+    list-style-type: none;
+    margin: 7px;
+    padding: 14px 16px;
+    overflow: hidden;
+    background-color: #333;
+    width: 800px;
+    text-align: center;
+    -webkit-border-radius: 3px; 
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+li {
+    float: left;
+    width: 15%;
+}
+
+li.name {
+    width: 40%;
+    text-align: left;
+}

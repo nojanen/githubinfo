@@ -15,9 +15,10 @@
 (defn about-page [request]
   (layout/render request "about.html"))
 
+(defn githubinfo-page [request]
+  (layout/render request "githubinfo.html"))
+
 (defn github-query [owner]
-  (print "get some ")
-  (println owner)
   (parse-string 
     ((client/get 
       (clojure.string/join ["https://api.github.com/users/" owner "/repos"])
@@ -54,7 +55,8 @@
   [""
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
-   ["/" {:get home-page}]
+   ["/" {:get githubinfo-page}]
    ["/about" {:get about-page}]
-   ["/api" {:get api-query}]])
+   ["/api" {:get api-query}]
+   ["/githubinfo" {:get githubinfo-page}]])
 

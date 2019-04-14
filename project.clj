@@ -29,24 +29,45 @@
                  [ring-webjars "0.2.0"]
                  [ring/ring-core "1.7.1"]
                  [ring/ring-defaults "0.3.2"]
-                 [selmer "1.12.12"]]
+                 [selmer "1.12.12"]
+                 [reagent "0.8.1"]
+                 [cljs-ajax "0.8.0"]]
 
   :min-lein-version "2.0.0"
   
   :source-paths ["src/clj"]
   :test-paths ["test/clj"]
-  :resource-paths ["resources"]
+  :resource-paths ["resources" "target/cljsbuild"]
+  :cljsbuild
+  {:builds {:app
+      {:source-paths ["src/cljs"]
+        :compiler
+                      {:main         "main"
+                      :asset-path    "/js/out"
+                      :output-to     "target/cljsbuild/public/js/app.js"
+                      :output-dir    "target/cljsbuild/public/js/out"
+                      :optimizations :none
+                      :source-map    true
+                      :pretty-print  true}}
+    :min
+    {:source-paths ["src/cljs"]
+      :compiler
+                    {:output-to    "target/cljsbuild/public/js/app.js"
+                    :output-dir    "target/uberjar"
+                    :externs       ["react/externs/react.js"]
+                    :optimizations :advanced
+                    :pretty-print  false}}}}
   :target-path "target/%s/"
   :main ^:skip-aot githubinfo.core
 
-  :plugins []
-
+  :plugins [[lein-cljsbuild "1.1.7"]]
   :profiles
   {:uberjar {:omit-source true
              :aot :all
              :uberjar-name "githubinfo.jar"
              :source-paths ["env/prod/clj"]
-             :resource-paths ["env/prod/resources"]}
+             :resource-paths ["env/prod/resources"]
+             :prep-tasks ["compile" ["cljsbuild" "once" "min"]]}
 
    :dev           [:project/dev :profiles/dev]
    :test          [:project/dev :project/test :profiles/test]
@@ -57,13 +78,15 @@
                                  [prone "1.6.1"]
                                  [ring/ring-devel "1.7.1"]
                                  [ring/ring-mock "0.3.2"]
-                                 [clj-http "3.9.1"]]
+                                 [clj-http "3.9.1"]
+                                 [org.clojure/clojurescript "1.10.516"]
+                                 [cljsjs/react-dom "16.2.0-3"]]
                   :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"]]
                   
                   :source-paths ["env/dev/clj"]
                   :resource-paths ["env/dev/resources"]
                   :repl-options {:init-ns user
-                                 :timeout 120000 }
+                                 :timeout 180000 }
                   :injections [(require 'pjstadig.humane-test-output)
                                (pjstadig.humane-test-output/activate!)]}
    :project/test {:jvm-opts ["-Dconf=test-config.edn"]

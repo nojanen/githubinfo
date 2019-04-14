@@ -1,21 +1,23 @@
 # githubinfo
 
-generated using Luminus version "3.25"
+A tiny Clojure/ClojureScript study.
 
-FIXME
+Caches GitHub repo statistics to local database.
 
-## Prerequisites
+# Usage
 
-You will need [Leiningen][1] 2.0 or above installed.
+Start up
+```
+$ lein run
+```
 
-[1]: https://github.com/technomancy/leiningen
+## UI
 
-## Running
+Open UI: [http://localhost:3000] (work in progress...)
 
-To start a web server for the application, run:
+## REST API
 
-    lein run 
+See orgs/users which repos are cached: [http://localhost:3000/api]
 
-## License
-
-Copyright © 2019 FIXME
+See stats of repos of org/user: [http://localhost:3000/api?org=nojanen]
+(the stats will be downloaded if not in cache)
