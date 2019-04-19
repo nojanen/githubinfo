@@ -57,6 +57,6 @@
                  middleware/wrap-formats]}
    ["/" {:get githubinfo-page}]
    ["/about" {:get about-page}]
-   ["/api" {:get api-query}]
-   ["/githubinfo" {:get githubinfo-page}]])
+   ["/api" {:get api-query}]])
+   ;; ["/githubinfo" {:get githubinfo-page}]])
 

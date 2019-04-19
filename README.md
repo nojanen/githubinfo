@@ -6,10 +6,26 @@ Caches GitHub repo statistics to local database.
 
 # Usage
 
+Init database
+```
+$ lein run migrate
+```
+
 Start up
 ```
 $ lein run
 ```
+
+Start for development
+```
+# 1st console:
+$ lein repl
+user=> (start)
+
+# 2nd console:
+$ lein cljsbuild auto
+```
+
 
 ## UI
 

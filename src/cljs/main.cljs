@@ -1,36 +1,34 @@
 (ns main
+    (:require-macros [cljs.core.async.macros :refer [go]])
     (:require [reagent.core :as r]
               [ajax.core :refer [GET POST]]))
 
+(def cached-owners (r/atom []))
+(def owner-repos (r/atom []))
+
+
 (defn handler [response]
-    (.log js/console (str response))
     (reset! cached-owners response))
 
-(def cached-owners (r/atom nil))
-
+(defn repo-data-component [repo]
+    [:ul
+        [:li {:class "name"} (get repo "repo_name")]
+        [:li [:img {:src "/img/star.svg"}] (get repo "stargazers_count")]
+        [:li [:img {:src "/img/watcher.svg"}] (get repo "watchers_count")]
+        [:li [:img {:src "/img/fork.svg"}] (get repo "forks_count")]
+        [:li [:img {:src "/img/issue.svg"}] (get repo "open_issues_count")]])
+    
 (defn owners-component []
-    (let [get-cached-owners (fn [] (GET "/api" :handler handler :response-format :json))]
+    (let [get-cached-owners (fn [] (GET "/api?org=nojanen" :handler (fn [rsp] (reset! cached-owners rsp)) :response-format :json))]
         (get-cached-owners)
         (fn []
             [:div {:class "owner"
                    :on-click #(swap! (:style (js/document.getElementById "owner_foo")) "display:block")}
-                   ;;"document.getElementById('owner_foo').style='display:block';"}
+                   ;; "document.getElementById('owner_foo').style='display:block';"}
                 [:div "foo"]
                 [:div {:class "repoList" :id "owner_foo" :align "center"}
-                    (for [index (range 3)]
-                        [repo-data-component {:repo_name (str "Foo" index) 
-                                          :stargazers_count 1
-                                          :watchers_count 2
-                                          :forks_count 3
-                                          :open_issues_count 4}])]])))
-
-(defn repo-data-component [repo]
-    [:ul {:key (str repo "_stats")}
-        [:li {:key (str repo "_name") :class "name"} (:repo_name repo)]
-        [:li {:key (str repo "_stars")} [:img {:src "/img/star.svg"}] (:stargazers_count repo)]
-        [:li {:key (str repo "_watchers")} [:img {:src "/img/watcher.svg"}] (:watchers_count repo)]
-        [:li {:key (str repo "_forks")} [:img {:src "/img/fork.svg"}] (:forks_count repo)]
-        [:li {:key (str repo "_issues")} [:img {:src "/img/issue.svg"}] (:open_issues_count repo)]])
+                    (doall (for [index (range (count @cached-owners))]
+                        ^{:key index} [repo-data-component (get @cached-owners index)]))]])))
 
 (defn timer-component []
     (let [seconds-elapsed (r/atom 0)]
@@ -41,5 +39,5 @@
 
 (defn ^:export run []
     (r/render 
-        [owners-component] 
+        [owners-component]
         (js/document.getElementById "app")))
