@@ -23,7 +23,7 @@ body {
     margin: auto;
 }
 
-input { 
+input[type=text] { 
     -webkit-border-radius: 3px; 
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -31,7 +31,7 @@ input {
     padding:2px
 }
 
-button {
+input[type=button] {
   border:1px solid #000; 
   -webkit-border-radius: 3px; 
   -moz-border-radius: 3px; 

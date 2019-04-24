@@ -14,18 +14,16 @@
         [:li [:img {:src "/img/issue.svg"}] (get repo "open_issues_count")]])
 
 (defn owner-repo-component [owner-name]
-    (def owner-repos (r/atom []))
+    (let [owner-repos (r/atom [])] (fn [] 
     (let [get-owner-repos (fn [] (GET (str "/api?org=" owner-name) :handler (fn [rsp] (reset! owner-repos rsp)) 
                                                                    :response-format :json))]
         (get-owner-repos)
         (fn []
-            [:div {:class "owner"
-                :on-click #(swap! (:style (js/document.getElementById "owner_foo")) "display:block")}
-                ;; "document.getElementById('owner_foo').style='display:block';"}
+            [:div.owner
                 [:div owner-name]
-                [:div {:class "repoList" :id "owner_foo" :align "center"}
+                [:div.repoList {:id (str "owner_" owner-name) :align "center"}
                     (doall (for [index (range (count @owner-repos))]
-                        ^{:key (str owner-name index)} [repo-data-component (get @owner-repos index)]))]])))
+                        ^{:key (str owner-name index)} [repo-data-component (get @owner-repos index)]))]])))))
 
 (defn owners-component []
     (let [get-cached-owners (fn [] (GET "/api" :handler (fn [rsp] (reset! cached-owners rsp))
@@ -36,11 +34,18 @@
             (doall (for [owner-index (range (count @cached-owners))]
                 ^{:key (str "owner" owner-index)} [owner-repo-component (get @cached-owners owner-index)]))])))
 
+(defn new-owner-input []
+    (let [new-owner (r/atom "")]
+        (fn []
+            [:div "Cache new org/user:"
+                [:input {:type "text" :on-change #(reset! new-owner (-> % .-target .-value))}]
+                [:input {:type "button" :value "Add" :on-click #(owner-repo-component @new-owner)}]]
+    )))
+
 (defn main-view []
-    [:div "Cache new org/user:"
-        [:input {:type "text"}]
-        [:input {:type "button" :value "Add" }]
-    [owners-component]])
+    [:div    
+        [new-owner-input]
+        [owners-component]])
 
 (defn ^:export run []
     (r/render 
